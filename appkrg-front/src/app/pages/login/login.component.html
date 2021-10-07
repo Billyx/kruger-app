@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Inventario Admin | Login Page</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta name="description" content="SIUP - Sistema de Información de Unidades Policiales"/>
+	<meta name="author" content="Billy Angulo"/>
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+</head>
+<body class="pace-top">
+	<!-- begin #page-loader -->
+	<div id="page-loader" class="fade show"><span class="spinner"></span></div>
+	<!-- end #page-loader -->	
+	<!-- begin login-cover -->
+	<div class="login-cover">
+		<div class="login-cover-image" style="padding-right:100px;background-image: url(assets/img/login-bg/login-bg-18_.jpg)" data-id="login-cover-image"></div>
+		<div class="login-cover-bg"></div>
+	</div>
+	<!-- end login-cover -->	
+	<!-- begin #page-container -->
+	<div id="page-container" class="fade">
+		<!-- begin login -->
+		<div class="login login-v2" data-pageload-addclass="animated fadeIn">
+			<!-- begin brand -->
+			<div class="login-header">
+				<div>
+					<!-- <img src="/assets/img/login-bg/siup-logo-login.png" style="width:80%;float:left" /> -->
+					<div><img src="/assets/img/login-bg/sistva.png" style="width:90%;padding-top:90px;margin-bottom:20px" /></div>
+				</div>
+			</div>
+			<br/>
+            <form [formGroup]="loginForm" (ngSubmit)="login()" name="loginForm" class="margin-bottom-0">
+                <div class="input-group m-b-10">
+                    <div class="input-group-prepend"><span class="input-group-addon input-group-prepend"><i class="fa fa-user fa-lg"></i></span></div>
+                    <input type="text" formControlName="username" maxlength="15" class="form-control form-control-lg" placeholder="Código de usuario" [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
+                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                        <div *ngIf="f.username.errors.required">Código de usuario requerido</div>
+                    </div>
+                </div> 
+                <div class="input-group m-b-10">
+                    <div class="input-group-prepend"><span class="input-group-addon input-group-prepend"><i class="fa fa-key fa-lg"></i></span></div>
+                    <input type="password" formControlName="password" maxlength="30" class="form-control form-control-lg" placeholder="Contraseña" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                        <div *ngIf="f.password.errors.required">Contraseña requerida</div>
+                    </div>
+                </div>
+                <br/>
+                <div class="login-buttons">
+                    <button [disabled]="loading" type="submit" class="btn btn-lime btn-block btn-lg">Ingresar <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span></button>
+                </div>					
+                <div ng-bind="errormsg"></div>
+            </form>
+        </div>
+    </div>
+	<!-- end page container -->	
+	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="/assets/js/login.min.js"></script>
+	<!-- ================== END PAGE LEVEL JS ================== -->
+</body>
+</html>
