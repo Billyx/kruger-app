@@ -17,6 +17,8 @@ export class AuthGuard implements CanActivate {
         const helper = new JwtHelperService();
         const isExpired = helper.isTokenExpired(refToken);
         
+        console.log("qqqqq ",currentUser);
+
         if(currentUser ){    
             return true;
         }

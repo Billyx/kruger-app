@@ -26,16 +26,44 @@ export class AuthService {
     this.url = utilService.getUrl()
    }
 
-   login(username: string, password: string){
+   /* login(username: string, password: string){
     
     return this.http.post<any>(this.url + '/login', { username, password },{observe: 'response' as 'body'})
            .pipe(map((user: any) => {                 
+              
+              localStorage.setItem('currentUser', JSON.stringify(user.headers.get('authorization'))); 
+               this.currentUserSubject.next(user);              
+               return user;
+           },(error: any) =>{ console.log("ERRORNN: ",error)}));
+     
+  } */
+
+  login(username: string, password: string){
+    
+    return this.http.post<any>(this.url + '/login', { username, password },{observe: 'response' as 'body'})
+           .pipe(map(user => {                 
                localStorage.setItem('currentUser', JSON.stringify(user.headers.get('authorization'))); 
                this.currentUserSubject.next(user);              
                return user;
-           },(error: any) =>{ console.log("ERRORN: ",error)}));
-     
-  }
+           },(error:any) =>{ console.log("ERRORN: ",error)}));
+
+           /*return this.http.post<any>(this.url, { username, password },{observe: 'response' as 'body'})
+           .pipe(
+               map(user => {                 
+                   localStorage.setItem('currentUser', JSON.stringify(user.headers.get('authorization'))); 
+                   this.currentUserSubject.next(user);              
+                   return user;
+                           },
+                   error =>{ console.log("ERRORN: ",error)}),
+               catchError(this.handleError<any[]>('login', [])));*/
+
+               /*return this.http.post(this.url, { username, password },{observe: 'response' as 'body'})
+               .map(res => res.json());*/
+
+               /*return this.http.post<any>(this.url, { username, password },{observe: 'response' as 'body'})
+               .pipe(map((response: any) => {response.json();console.log("?? ",response)} ));*/
+               
+ }
 
   public get currentUserValue(): User {
     return this.currentUserSubject.value;

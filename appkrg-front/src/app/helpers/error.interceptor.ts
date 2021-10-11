@@ -22,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                     //alert("Tiempo de sesión expirado "+err.status)
                     
                     this.authenticationService.logout();
-                    location.reload();
+                    //location.reload();
                     //this.router.navigate(['/login'])
                 }else{
                       console.log("Acceso Denegado2")

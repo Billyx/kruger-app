@@ -1,1 +1,95 @@
-<p>home works!</p>
+<!-- end #page-loader -->
+
+<div id="page-container" class="page-container page-header-fixed page-sidebar-fixed page-header-fixed">
+	<div id="header" class="header navbar-default  navbar-inverse">
+		<ul class="navbar-nav navbar-right">
+		<!-- <li class="navbar-form">
+				<form action="" method="POST" name="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Enter keyword" />
+						<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+					</div>
+				</form>
+			</li> -->
+			<li class="dropdown navbar-user">
+				<a href="#" (click)="logout()" data-toggle="dropdown">
+					<i class="fa fa-"></i>&nbsp; 
+					<span class="d-none d-md-inline" (click)="logout()">Cerrar sesión</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<!-- begin #sidebar -->
+	<div id="sidebar" class="sidebar">
+		<!-- begin sidebar scrollbar -->
+		<div data-scrollbar="true" data-height="100%">
+			<!-- begin sidebar user -->
+			<ul class="nav">
+				<li class="nav-profile">
+					<a href="javascript:;" data-toggle="nav-profile">
+						<div class="cover with-shadow"></div>
+						<div class="image">
+							<img src="assets/img/user-avatar.png" alt="" />
+						</div>
+						<div class="info">
+							nombre de usurio
+							<small>Personal Aprobador</small>	
+						</div>
+					</a>
+				</li>
+			</ul>
+			<!-- end sidebar user -->
+			<!-- begin sidebar nav -->
+			<ul class="nav">
+				<li class="has-sub">					
+					<a href="javascript:;" id="dashboardb" routerLinkActive="active">								
+							<i class="fa fa-home"></i> 
+							<span>Inicio</span>
+					</a>
+				</li>				
+				<li class="has-sub">
+					<a href="javascript:;">
+						<b class="caret"></b>
+						<i class="fa fa-lock m-r-10 fa-4x"></i>
+						<span>Administración</span>
+					</a>
+					<ul class="sub-menu">
+						<li><a href="javascript:;" [routerLink]="['users']" routerLinkActive="active"> Usuarios</a></li>
+					</ul>					
+				</li>
+				<!-- Comisarías Básicas -->
+				<li class="has-sub">
+					<a href="javascript:;">
+						<b class="caret"></b>
+						<i class="fa fa-clipboard m-r-10 fa-4x"></i>
+						<span>Perfil Empleado</span>
+					</a>
+					<ul class="sub-menu">
+						<li><a href="javascript:;" [routerLink]="['/comisarias-basicas/capitulo100']" routerLinkActive="active">Actualizar información</a></li>
+					</ul>
+				</li>
+				<!-- begin sidebar minify button -->
+				<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
+				<!-- end sidebar minify button -->
+			</ul>
+			<!-- end sidebar nav -->
+		</div>
+		<!-- end sidebar scrollbar -->
+	</div>
+	<div class="sidebar-bg"></div>
+	<!-- end #sidebar -->
+	
+	<!-- begin #content -->
+	<div id="content" class="content">
+		<router-outlet></router-outlet>
+	</div>
+	<!-- end #content -->
+	<!-- begin scroll to top btn -->
+	<a href="javascript:;" id="scrolltop" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+	<!-- end scroll to top btn -->
+	<div id="footer" class="footer" style="text-align:center">
+		© 2021 SIVAC - Sistema de Información de Vacunados<br/>
+		Soporte: soportesivac@msivac.pe
+	</div>
+</div>
+<!-- end page container -->
