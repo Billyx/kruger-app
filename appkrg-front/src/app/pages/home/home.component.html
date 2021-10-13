@@ -54,14 +54,14 @@
 						<span>Administración</span>
 					</a>
 					<ul class="sub-menu">
-						<li><a href="javascript:;" [routerLink]="['users']" routerLinkActive="active"> Usuarios</a></li>
+						<li><a href="javascript:;" (click)="userMain()" routerLinkActive="active"> Usuarios</a></li>
 					</ul>					
 				</li>
 				<!-- Comisarías Básicas -->
 				<li class="has-sub">
 					<a href="javascript:;">
 						<b class="caret"></b>
-						<i class="fa fa-clipboard m-r-10 fa-4x"></i>
+						<i class="fa fa-user m-r-10 fa-4x"></i>
 						<span>Perfil Empleado</span>
 					</a>
 					<ul class="sub-menu">

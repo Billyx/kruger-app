@@ -32,7 +32,7 @@ public class Employee {
     @Column
     private String icard;
 
-    @Column(name = "born_date")
+    @Column(name="born_date")
     private String borndate;
 
     @Column
@@ -42,6 +42,17 @@ public class Employee {
     private String mobilephone;
 
     @Column(name="is_vaccinated")
-    private Boolean isVaccinated;
+    private String isVaccinated;
+
+    @Column(name="first_vac_date")
+    private String firstVacDate;
+
+    @Column(name="second_vac_date")
+    private String secondVacDate;
+
+    @OneToOne
+    @JoinColumn(name="id_vac_type")
+    private VaccineType vaccineType;
+
 
 }

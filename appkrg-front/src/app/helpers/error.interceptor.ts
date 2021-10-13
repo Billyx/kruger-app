@@ -19,15 +19,12 @@ export class ErrorInterceptor implements HttpInterceptor {
                 
                 // Si el jwt expira (Intercepta una url dentro del sistema)
                 if(request.url.search("/login") != 26){
-                    //alert("Tiempo de sesión expirado "+err.status)
-                    
                     this.authenticationService.logout();
-                    //location.reload();
+                    location.reload();
                     //this.router.navigate(['/login'])
                 }else{
                       console.log("Acceso Denegado2")
                       localStorage.setItem("msgerror", "Usuario/Clave incorrectos");
-                 //   alert("Acceso denegado") 
                 }
                
             }

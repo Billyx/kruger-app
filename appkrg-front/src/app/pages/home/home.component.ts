@@ -12,11 +12,15 @@ export class HomeComponent implements OnInit {
   constructor(private auth:AuthService,
     private router:Router) { 
     if (this.auth.currentUserValue) { 
-      this.router.navigate(['home']);
+      this.router.navigate(['']);
     }
   }
 
   ngOnInit(): void {
+  }
+
+  userMain(){
+    this.router.navigate(['/admin/users']);
   }
 
   logout(){

@@ -17,28 +17,14 @@ export class JwtInterceptor implements HttpInterceptor{
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
         
         let currentUser =  this.auth.currentUserValue // = JSON.parse(localStorage.getItem('currentUser'));
-        
-        console.log(currentUser, " ............!..........");
-
         console.log("CurrentUser: ",currentUser)
-        //console.log("->= ",this.auth.getTokenRefresh())
-
-        //if (currentUser && currentUser.token){
-        //console.log("----pepe: ",request.url.search("/login")," ",request.url, document.location.pathname)
-        //console.log(this.auth.getToken())
-        //if(request.url.search("/login") === -1){
             
             if(this.auth.getToken()){
-                
-                //console.log("adding authorization token header: " ,this.auth.getToken())
-                //console.log("IS AUTH: ",this.auth.getDecodeToken())
                 request = request.clone({
-                    //setHeaders:{ Authorization: `Bearer ${this.auth.getToken()}` }
                     setHeaders:{ Authorization: this.auth.getToken() }
                 })
                 
             }
-        //}
         return next.handle(request)
     }
 

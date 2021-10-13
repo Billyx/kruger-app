@@ -1,1 +1,384 @@
-<p>users works!</p>
+
+<!-- begin breadcrumb -->
+<ol class="breadcrumb float-xl-right">
+    <li class="breadcrumb-item"><a href="javascript:;">Administración</a></li>
+    <li class="breadcrumb-item"><a href="javascript:;">Usuarios</a></li>
+    <li class="breadcrumb-item active"><a href="javascript:;">Listado de Usuarios</a></li>        
+</ol>
+<!-- end breadcrumb -->
+<!-- begin page-header -->
+<h1 class="page-header">Usuarios del Sistema <small>Listado de usuarios...</small></h1>
+<!-- end page-header -->
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-2 -->
+    
+    <!-- end col-2 -->
+    <!-- begin col-10 -->
+    <div class="col-xl-12">
+        <div class="panel panel-inverse">
+            <!-- begin panel-heading -->
+            <div class="panel-heading">
+                <h4 class="panel-title"><i class="fa fa-user"></i> Usuarios del Sistema</h4>
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload" (click)="listUsersByFilters()"><i class="fa fa-redo"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>                        
+                </div>
+            </div>
+            <!-- end panel-heading -->
+            <!-- begin panel-body -->
+            <div class="panel-body">
+                <!--<div class="row">
+                        <div class="col-xs-4 col-sm-3 col-lg-3">
+                                                                          
+                                     <div class="input-group input-group-sm m-b-10">                                                    
+                                            <input type="text"  [(ngModel)]="searchString" class="form-control" placeholder="Buscar..." (keyup.enter)="search($event)">
+                                            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
+                                    </div>
+                                    <a (click)="exportUsersAsXLSX()" href="javascript:;" ><i class="fa fa-file-excel"></i> Exportar Excel</a>
+                                    
+                        </div>
+                        <div class="col-xs-1 col-sm-4 col-md-2 col-lg-6"></div>
+                        <div class="col-xs-6 col-sm-5 col-lg-3" >
+                                <div class="input-group date" id="datetimepicker2" style="float:right">
+                                    <label class="col-form-label" style="margin-right:5px">Mostrar</label>
+                                    <select class="form-control-sm mb-3" (change)="setRange($event.target.value)">
+                                            <i class="fa fa-caret-down pull-right m-t-2"></i>
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                        <label class="col-form-label hidden-md" style="margin-left:5px">Registros</label>
+                                </div>
+                        </div>  
+                </div> -->
+                <table class="col-md-12">
+                    <tr>
+                        <td>
+                            <div class="col-md-12 col-xs-9" style="margin-left:-15px">
+                                <button type="button" class="btn btn-primary btn-sm" id="newformbutton" (click)="initNuForm()" data-toggle="modal" data-target="#newuser">
+                                    <i class="ion ion-ios-add fa-lg"></i> Nuevo </button>&nbsp;
+                                <!-- <button type="button" class="btn btn-green btn-sm" id="nformbutton" (click)="exportUsersAsXLSX()">
+                                    <i class="fa fa-file-excel"></i> Exportar Excel </button> -->
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group date col-md-12 col-xl-6 col-lg-9 col-sm-9" id="datetimepicker2" style="float:right">
+                                <label class="col-form-label" style="margin-right:5px">Mostrar</label>
+                                <select class="form-control-sm mb-3" (change)="setRange($any($event))">
+                                        <i class="fa fa-caret-down pull-right m-t-2"></i>
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    <label class="col-form-label hidden-md" style="margin-left:5px">Registros</label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table id="data-table-combine" class="table table-sm table-responsive table-striped table-bordered table-td-valign-middle">
+                    <thead>
+                        <tr class="table-active">
+                            <th width="1%">#</th>
+                            <!-- <th width="2%">Cod.</th> -->
+                            <th>Cédula</th>
+                            <th>Nombres</th>
+                            <th class="text-nowrap">Apellidos</th>
+                            <th class="">Correo electrónico</th>
+                            <th class="text-nowrap">Estado Vacunación</th>
+                            <th class="text-nowrap">Tipo de Vacuna</th>
+                            <th class="text-nowrap">Fecha Vacunación</th>
+                            <th class="text-nowrap d-xs-none d-sm-block" style="width:85px">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="spinner">
+                            <td colspan="10" style="text-align:center"><i class="fas fa-sync fa-spin fa-2x"></i></td>
+                        </tr>
+                        <tr>
+                            <td width="1%" class="f-s-600 text-inverse"></td>
+                            <!-- <td width="2%" class="f-s-600 text-inverse"></td> -->
+                            <td><input type="text" placeholder="cédula" [(ngModel)]="idcard" class="form-control form-control-sm" (keyUp.enter)="listUsersByFilters()" readonly></td>
+                            <td><input type="text" placeholder="nombres" [(ngModel)]="name" class="form-control form-control-sm" (keyUp.enter)="listUsersByFilters()" readonly></td>
+                            <td><input type="text" placeholder="lastname" [(ngModel)]="lastname" class="form-control form-control-sm" (keyUp.enter)="listUsersByFilters()" readonly></td>
+                            <td><input type="text" placeholder="correo e" [(ngModel)]="email" class="form-control form-control-sm" (keyUp.enter)="listUsersByFilters()" readonly></td>
+                            <td><input type="text" placeholder="evac" [(ngModel)]="evac" class="form-control form-control-sm" (keyUp.enter)="listUsersByFilters()" size="10"></td>
+                            <td><input type="text" placeholder="tvac" [(ngModel)]="tvac" class="form-control form-control-sm" (keyUp.enter)="listUsersByFilters()"></td>
+                            <td><input type="text" placeholder="fecha vac" [(ngModel)]="fvacini" class="form-control form-control-sm" (keyUp.enter)="listUsersByFilters()"></td>
+                            <td></td>
+                        </tr>
+                        <tr class="odd gradeX" *ngFor="let usr of users; let i = index">
+                            <td width="1%" class="f-s-600 text-inverse">{{start + i}}</td>
+                            <td>{{usr.icard}}</td>
+                            <td>{{usr.name}} {{usr.lastname}} {{usr.mlastname}}</td>                              
+                            <td>{{usr.email}}</td>
+                            <td class="">{{usr.phone}}</td>
+                            <td class="text-nowrap">{{usr.evac}}</td>
+                            <td>{{usr.tvac}}</td>                                
+                            <td>{{usr.fvac}}</td>
+                            <td class="d-xs-none d-sm-block">
+                                <div *ngIf="usr.profile.idPerfil != 1">
+                                    <a href="#" title="Editar" class="btn btn-white btn-xs" data-toggle="modal" data-target="#edituser" (click)="getUserData(usr)">
+                                        <i class="fas fa-lg fa-fw fa-edit"></i></a>
+                                        <a href="#" title="Eliminar" class="btn btn-white btn-xs" data-toggle="modal" data-target="#deleteuser" (click)="setUserToDelete(usr)">
+                                        <i class="fas fa-lg fa-fw fa-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="users && users.length == 0">
+                            <td colspan="9" style="text-align: center;">No se encontraron registros según criterios de búsqueda</td>
+                        </tr>                           
+                    </tbody>
+                </table>                
+                <div class="row" style="margin-top:10px">
+                    <div class="col-sm-12 col-md-5 d-xs-none d-md-block">
+                        <div class="dataTables_info " id="data-table-default_info" role="status" aria-live="polite">Registros {{this.start}} a {{this.end}} de {{totalRecords}}</div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="data-table-default_paginate">
+                            <ul class="pagination pagination-sm m-t-0 m-b-5">
+                                    <li class="page-item"><a href="javascript:;" class="page-link" (click)="firstPage()">«</a></li>
+                                <li class="paginate_button page-item previous" id="data-table-default_previous">
+                                    <a href="javascript:;" aria-controls="data-table-default" data-dt-idx="0" tabindex="0" class="page-link" disabled="disabled" (click)="previousPage()">Anterior</a>
+                                </li>
+                                <input class="form-control-sm" type="text" [(ngModel)]="showpage" maxlength="3" readonly="readonly" style="width:47px;height:25px"/>
+                                <li class="paginate_button page-item ">
+                                    <a href="javascript:;" aria-controls="data-table-default" data-dt-idx="7" tabindex="0" class="page-link" (click)="nextPage()">Siguiente</a>
+                                </li>
+                                <li class="page-item"><a href="javascript:;" class="page-link" (click)="lastPage()">»</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>                    
+            </div>
+            <div class="modal fade" id="edituser" style="margin-top: 50px;" tabindex="-1" role="dialog" aria-labelledby="edituserTitle" aria-hidden="true">
+                <form class="form-horizontal form-bordered form-control-with-bg" #usuarioform="ngForm" [formGroup]="uform" name="uform" (ngSubmit)="updateUser()">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content" >
+                        <div class="panel panel-sip" data-sortable-id="form-stuff-1" >
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Editar datos de <b>Usuario</b></h4>
+                                <div class="panel-heading-btn">
+                                    <a href="javascript:;" #btnCloseModalDialog class="btn btn-xs btn-icon btn-circle btn-danger close"
+                                        data-dismiss="modal" aria-label="Close" id="closemodal"><i class="fa fa-times"></i></a>
+                                </div>
+                            </div>
+                            <div class="panel-body panel-form form-horizontal form-bordered form-control-with-bg">                                               
+                                <table id="user" class="table table-sm table-bordered table-striped" *ngIf="selectedUser">                                    
+                                    <tbody>
+                                        <tr>
+                                            <td class="rightcenter">Nombres completos</td>
+                                            <td>
+                                                <div class="input-group" id="">
+                                                    <input type="hidden" formControlName="id" />
+                                                    <input type="text" class="form-control form-control-sm" formControlName="nombres" 
+                                                        [ngClass]="uform.controls['nombres'].invalid && usuarioform.submitted ? 'form-control form-control-sm is-invalid' : 'form-control form-control-sm'"/>
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-user"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="invalid-tooltip input-group" *ngIf="!uform.controls['nombres'].valid && usuarioform.submitted">Nombre incorrecto</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="rightcenter">N° de Teléfono móvil</td>
+                                            <td>
+                                                <div class="input-group" id="">
+                                                    <input type="text" class="form-control form-control-sm" formControlName="telefonom" maxlength="15"  
+                                                        [ngClass]="uform.controls['telefonom'].invalid && usuarioform.submitted ? 'form-control form-control-sm is-invalid' : 'form-control form-control-sm'"/>
+                                                    <span class="input-group-addon">
+                                                    <i class="fa fa-phone"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="invalid-tooltip input-group" *ngIf="!uform.controls['telefonom'].valid && usuarioform.submitted">N° Teléfono incorrecto</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="rightcenter">Correo electrónico</td>
+                                            <td>
+                                                <div class="input-group" id="">
+                                                    <input type="text" class="form-control form-control-sm" formControlName="email"
+                                                        [ngClass]="uform.controls['email'].invalid && usuarioform.submitted ? 'form-control form-control-sm is-invalid' : 'form-control form-control-sm'"/>
+                                                    <span class="input-group-addon">
+                                                    <i class="fa fa-envelope"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="invalid-tooltip input-group" *ngIf="!uform.controls['email'].valid && usuarioform.submitted">Correo eletrónico incorrecto</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="rightcenter">Username</td>
+                                            <td>
+                                                <div class="input-group" id="">
+                                                    <input type="hidden" formControlName="oldusername" />
+                                                    <input type="text" class="form-control form-control-sm" maxlength="15" formControlName="username"  
+                                                            [ngClass]="(uform.controls['username'].invalid || uform.controls['usernameItsOk'].invalid) && uformSubmited ? 'form-control form-control-sm is-invalid' : 'form-control form-control-sm'"/>
+                                                    <span class="input-group-addon">
+                                                    <i class="fa fa-address-card"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="invalid-tooltip input-group" *ngIf="!uform.controls['username'].valid && uformSubmited">Usuario incorrecto</div>
+                                                <div class="invalid-tooltip input-group" *ngIf="!uform.controls['usernameItsOk'].valid && uformSubmited"><i style="margin-top:3px" class="fas fa-lg fa-database"></i>&nbsp;El usuario ya existe en la base de datos</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="text-align: center;">
+                                                <button [disabled]="loading" type="button" class="btn btn-green col-md-4" id="uformbutton" type="submit">
+                                                    <i class="far fa-lg fa-fw m-r-10 fa-save"></i>Actualizar <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12 col-lg-12" *ngIf="uform.valid && uformSubmited">
+                                <div class="alert alert-green fade show" style="text-align:center">
+                                        <span class="close" data-dismiss="alert">×</span>
+                                        <i class="fas fa-lg fa-fw m-r-10 fa-check-circle"></i> <strong>Datos actualizados! </strong>
+                                        La actualización se realizó satisfactoriamente
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12" *ngIf="uform.invalid && uformSubmited">
+                                <div class="alert alert-danger fade show" style="text-align:center">
+                                    <span class="close" data-dismiss="alert">×</span>
+                                    <i class="fas fa-lg fa-fw m-r-10 fa-times-circle alert-danger"></i> <strong>Error! </strong>
+                                    Por favor revisar formulario e ingresar las opciones solicitadas
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+            <div *ngIf="nuFormInitialized" class="modal fade" id="newuser" style="margin-top: 50px;" tabindex="-1" role="dialog" aria-labelledby="newUserTitle" aria-hidden="true">
+                <form class="form-horizontal form-bordered form-control-with-bg" #nusuarioform="ngForm" [formGroup]="nuform" name="nuform" (ngSubmit)="newUser()">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="panel panel-primary" data-sortable-id="form-stuff-1">
+                            <!-- begin panel-heading -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Nuevo <b>Usuario</b></h4>
+                                <div class="panel-heading-btn">
+                                    <a href="javascript:;" #btnCloseModalDialog class="btn btn-xs btn-icon btn-circle btn-danger close"
+                                        data-dismiss="modal" aria-label="Close" id="closemodaln"><i class="fa fa-times"></i></a>
+                                </div>
+                            </div>
+                            <div class="panel-body panel-form form-horizontal form-bordered form-control-with-bg">                                               
+                                <table class="table table-sm table-bordered table-striped">                                    
+                                    <tbody>
+                                        <tr>
+                                            <td class="rightcenter">Nombres completos</td>
+                                            <td>
+                                                <div class="input-group" id="">                                                        
+                                                    <input type="text" class="form-control form-control-sm" formControlName="name" 
+                                                        [ngClass]="nuform.controls['name'].invalid && nuformSubmited ? 'form-control form-control-sm is-invalid' : 'form-control form-control-sm'"/>
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-user"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="invalid-tooltip input-group" *ngIf="!nuform.controls['nombres'].valid && nuformSubmited">Nombre incorrecto</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="rightcenter">Apellido Paterno</td>
+                                            <td>
+                                                <div class="input-group" id="">
+                                                    <input type="text" class="form-control form-control-sm" formControlName="lastname" maxlength="15"  
+                                                        [ngClass]="nuform.controls['lastname'].invalid && nuformSubmited ? 'form-control form-control-sm is-invalid' : 'form-control form-control-sm'"/>
+                                                    <span class="input-group-addon">
+                                                    <i class="fa fa-phone"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="invalid-tooltip input-group" *ngIf="!nuform.controls['lastname'].valid && nuformSubmited">Apellido paterno incorrecto</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="rightcenter">Apellido materno</td>
+                                            <td>
+                                                <div class="input-group" id="">
+                                                    <input type="text" class="form-control form-control-sm" formControlName="mlastname"
+                                                        [ngClass]="nuform.controls['mlastname'].invalid && nuformSubmited ? 'form-control form-control-sm is-invalid' : 'form-control form-control-sm'"/>
+                                                    <span class="input-group-addon">
+                                                    <i class="fa fa-envelope"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="invalid-tooltip input-group" *ngIf="!nuform.controls['mlastname'].valid && nuformSubmited">Apellido materno inválido</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="rightcenter">Correo electrónico</td>
+                                            <td>
+                                                <div class="input-group" id="">
+                                                    <input type="text" class="form-control form-control-sm" maxlength="15" formControlName="email"
+                                                            [ngClass]="nuform.controls['email'].invalid && nuformSubmited ? 'form-control form-control-sm is-invalid' : 'form-control form-control-sm'"/>
+                                                    <span class="input-group-addon">
+                                                    <i class="fa fa-address-card"></i>
+                                                    </span>
+                                                </div>                                                                                        
+                                                <div class="invalid-tooltip input-group" *ngIf="nuform.controls['usernameItsOk'].invalid && nuformSubmited"><i style="margin-top:3px" class="fas fa-lg fa-database"></i>&nbsp;El usuario ya existe en la base de datos</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="text-align: center;">
+                                                <button [disabled]="userCreated" type="button" class="btn btn-primary col-md-4" id="nuformbutton" type="submit">
+                                                    <i class="far fa-lg fa-fw m-r-10 fa-save"></i>Guardar <span *ngIf="loadingnu" class="spinner-border spinner-border-sm mr-1"></span></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12 col-lg-12" *ngIf="nuform.valid && userCreated">
+                                <div class="alert alert-green fade show" style="text-align:center">
+                                        <span class="close" data-dismiss="alert">×</span>
+                                        <i class="fas fa-lg fa-fw m-r-10 fa-check-circle"></i> <strong>Datos guardados! </strong>
+                                        El usuario se registró satisfactoriamente.
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12" *ngIf="nuform.invalid && nuformSubmited">
+                                <div class="alert alert-danger fade show" style="text-align:center">
+                                    <span class="close" data-dismiss="alert">×</span>
+                                    <i class="fas fa-lg fa-fw m-r-10 fa-times-circle alert-danger"></i> <strong>Error! </strong>
+                                    Por favor revisar formulario e ingresar las opciones solicitadas
+                                </div>
+                            </div>                                        
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+            <!-- <div *ngIf="userDelete" class="modal fade" id="deleteuser" style="display: none;" aria-hidden="true">
+                <form class="form-horizontal form-bordered form-control-with-bg" #dusuarioform="ngForm" [formGroup]="duform" name="duform" (ngSubmit)="deleteUserConfirm()">
+                    <input type="hidden" formControlName="user" />
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"><i class="fa fa-exclamation-circle"></i> Advertencia</h4>
+                                <button type="button" class="close" id="dclose" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                        <div class="modal-body">
+                            <div class="alert alert-danger m-b-0">
+                                <h5><i class="fa fa-trash"></i> Eliminar Usuario</h5>
+                                <p *ngIf="userDelete">Se eliminará el usuario "{{userInfo.nombres}} "del sistema. Al seleccionar la opción "Eliminar" el sistema eliminará definitivamente al usuario seleccionado.</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="javascript:;" class="btn btn-info" data-dismiss="modal">Cerrar</a>                                
+                            <button type="button" class="btn btn-danger col-md-3" id="uformbutton" type="submit">
+                                <i class="fa fa-times-circle"></i> Eliminar</button>
+                        </div>
+                        </div>
+                    </div>
+                </form>
+            </div> -->
+       <!--  </div> -->
+    </div>
+    <!-- end col-10 -->
+</div>
+<!-- end row -->
+<!-- begin scroll to top btn -->
+<a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+<!-- end scroll to top btn -->
+<router-outlet></router-outlet>
+
