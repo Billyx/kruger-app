@@ -50,7 +50,7 @@ public class UsuarioDetailsServiceImpl implements UserDetailsService {
         }else{
 
             throw new UsernameNotFoundException(
-                    String.format("Username not found for domain, username=%s, domain=%s",
+                    String.format("Username not found for domain, username, domain",
                             username));
         }
     }

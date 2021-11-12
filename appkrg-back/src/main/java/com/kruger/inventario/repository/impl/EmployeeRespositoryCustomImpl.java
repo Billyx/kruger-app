@@ -36,13 +36,13 @@ public class EmployeeRespositoryCustomImpl implements EmployeeRepositoryCustom {
         Predicate tvacp = null; // Tipo de vacunación
         Predicate dvac = null; // Fecha inicio de vacunación
 
-        if(arg1 != null){
+        if(!arg1.isEmpty()){
             evacp = cb.equal(employees.get("evac"),arg1);
         }
-        if(arg2 != null){
+        if(!arg2.isEmpty()){
             tvacp = cb.equal(employees.get("vaccineType"),arg2);
         }
-        if(arg3 != null && arg4 != null){
+        if(!arg3.isEmpty() && !arg4.isEmpty()){
             Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(arg3);
             Date date2=new SimpleDateFormat("dd/MM/yyyy").parse(arg4);
             dvac = cb.between(employees.<Date>get("firstVacDate"), date1, date2);

@@ -22,6 +22,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, Emplo
                                           String vacdateini,
                                           String vacdatefin,
                                           Pageable limit);
-
-    List<Employee> findEmployeesByFilters(String arg1, String arg2, String arg3, String arg4, int arg5, int arg6) throws ParseException;
+    @Override
+    List<Employee>  findEmployeesByFilters(String arg1, String arg2, String arg3, String arg4, int arg5, int arg6) throws ParseException;
 }
